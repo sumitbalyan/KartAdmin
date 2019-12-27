@@ -12,6 +12,5 @@ In the project directory, you can run:
 
 ## Admin Dashboard screen
 
-![alt text](https://github.com/sumitbalyan/KartAdmin/blob/master/Images/Dashboard.PNG)
 [<img src="./Images/Dashboard.PNG" width=33% />]
 
