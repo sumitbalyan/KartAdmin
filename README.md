@@ -10,3 +10,7 @@ In the project directory, you can run:
 
 ![alt text](https://github.com/sumitbalyan/KartAdmin/blob/master/Images/Admin%20Login.PNG)
 
+## Admin Dashboard screen
+
+![alt text](https://github.com/sumitbalyan/KartAdmin/blob/master/Images/Dashboard.PNG)
+
