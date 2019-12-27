@@ -8,9 +8,10 @@ In the project directory, you can run:
 
 ## Admin Login screen
 
-![alt text](https://github.com/sumitbalyan/KartAdmin/blob/master/Images/Admin%20Login.PNG)
+[<img src="./Images/Admin Login.PNG" width=33% />]
 
 ## Admin Dashboard screen
 
 ![alt text](https://github.com/sumitbalyan/KartAdmin/blob/master/Images/Dashboard.PNG)
+[<img src="./Images/Dashboard.PNG" width=33% />]
 
