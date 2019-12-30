@@ -1,3 +1,3 @@
-import Home from './HomeNavigation';
+import Index from './LoginNavigation';
 
-export default Home;
+export default Index;

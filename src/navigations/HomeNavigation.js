@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, ImageBackground, SafeAreaView, Image, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, ImageBackground, SafeAreaView, StatusBar, Button } from 'react-native';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import Home from '../components/Home';
 import Users from '../components/Users';
 import Products from '../components/Products';
@@ -10,19 +10,30 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import BackgroundImage from '../assets/images/background.jpg';
 import { createStackNavigator } from 'react-navigation-stack';
 import { PRIMARY } from '../assets/styles/colors';
+import Login from '../components/Login';
+import { userAuth } from '../services';
 
 const { width : WIDTH} = Dimensions.get('window');
 
 const HomeNavigation = () => {
-    const AppContainer = createAppContainer(HomeDrawer);
+    const AppContainer = createAppContainer(createSwitchNavigator({
+        Home : HomeDrawer,
+        Auth : Login,
+       
+    },
+    {
+        initialRouteName : 'Home'
+    }
+    ));
     return (
         <AppContainer />
     )
 }
+
 const CustomDrawerComponent = (props)=> (
     <ImageBackground style = {styles.drawerView} source = {BackgroundImage}>
         <StatusBar barStyle = "light-content" backgroundColor = {PRIMARY} />
-        <SafeAreaView>
+        <SafeAreaView style = {styles.containerSafeAreaView}>
             <View style= {styles.drawerUserView}>
                 <Icon name = 'ios-contact' size = {100} color = "#858585" />
                 <Text style = {styles.text}>Hi admin!</Text>
@@ -30,6 +41,7 @@ const CustomDrawerComponent = (props)=> (
             <View style={styles.devider} />
             <ScrollView>
                 <DrawerItems {...props} />
+                <Button color = {'red'} title="Logout" onPress={userAuth.logout(props.navigation)}/>
             </ScrollView>
         </SafeAreaView>
     </ImageBackground>
@@ -44,7 +56,7 @@ const HomeStackNavigator = createStackNavigator({
                         headerStyle : {
                             backgroundColor : PRIMARY
                         },
-                        headerLeft: <Icon style={{paddingLeft: 5 }} color = "white" name="ios-menu" size={35} onPress={ () => navigation.openDrawer() } />
+                        headerLeft : <Icon style={{paddingLeft: 5 }} color = "white" name="ios-menu" size={35} onPress={ () => navigation.openDrawer() } />
             }
         }
     }
@@ -155,6 +167,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginTop: 15,
         opacity : 0.5
+    },
+    containerSafeAreaView : {
+        marginLeft : 5,
+        marginRight : 5
     }
 });
 
