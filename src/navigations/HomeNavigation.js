@@ -17,12 +17,12 @@ const { width : WIDTH} = Dimensions.get('window');
 
 const HomeNavigation = () => {
     const AppContainer = createAppContainer(createSwitchNavigator({
-        Home : HomeDrawer,
         Auth : Login,
+        Home : HomeDrawer,
        
     },
     {
-        initialRouteName : 'Home'
+        initialRouteName : 'Home',
     }
     ));
     return (
@@ -41,7 +41,7 @@ const CustomDrawerComponent = (props)=> (
             <View style={styles.devider} />
             <ScrollView>
                 <DrawerItems {...props} />
-                <Button color = {'red'} title="Logout" onPress={userAuth.logout(props.navigation)}/>
+                <Button color = {'red'} title="Logout" onPress={() =>userAuth.logout(props.navigation)}/>
             </ScrollView>
         </SafeAreaView>
     </ImageBackground>

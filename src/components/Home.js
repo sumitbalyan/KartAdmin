@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const Home = () => {
+const Home = (props) => {
     return (
         <View style = {styles.container}>
             <Text>Welcome to admin kart !!</Text>

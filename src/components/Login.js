@@ -8,10 +8,11 @@ import AdminImage from '../assets/images/admin.png';
 import Background from '../assets/images/background.jpg';
 import { Toast, Email } from '../utils/';
 import Loader from './Loader';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 const {width : WIDTH} = Dimensions.get('window');
 
-const Login = (props) => {
+const Login = ({navigation}) => {
     const [state, setstate] = useState(
                 {
                     showpass:true,
@@ -24,12 +25,20 @@ const Login = (props) => {
 
     const handlePass = ()=> {
         if(!state.press){
-            setstate({showpass : false, press : true});
+            setstate({...state,showpass : false, press : true});
         }
         else {
-            setstate({showpass : true, press : false});
+            setstate({...state,showpass : true, press : false});
         }
 
+    }
+
+    const resetRoute = () => {
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Home' })],
+        });
+        navigation.dispatch(resetAction); 
     }
 
     const _SignInAsync = async ()=>{
@@ -45,14 +54,16 @@ const Login = (props) => {
         else {
             setstate({...state, indicator : true});
             const userData = await userAuth.login(state.email, state.password);
-            if(userData.token !== undefined){
+            if(userData !== undefined){
+                Toast.show('Logged in')
                 setstate({...state, indicator : false});
-                props.navigation.navigate('App');
+                resetRoute();
+                navigation.navigate('App', {userData});
             }
             else{
                 setstate({...state, indicator : false});
-                Toast.show(userData.message);
-                userAuth.logout(props.navigation);
+                Toast.show('Some error occured at server : '+ userData.message);
+                userAuth.logout(navigation);
             }
             
         }
@@ -78,6 +89,7 @@ const Login = (props) => {
                             placeholderTextColor = {'rgba(255,255,255,0.7)'}
                             underlineColorAndroid = 'transparent'
                             onChangeText = {(text)=> setstate({...state, email:text}) }
+                            autoCapitalize = 'none'
                             />
                     </View>
                     <View style = {styles.inputContainer}>

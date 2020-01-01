@@ -27,7 +27,7 @@ export default class AuthLoading extends React.Component {
     return (
       <View style={styles.container}>
         <ActivityIndicator />
-        <StatusBar  backgroundColor = {PRIMARY} barStyle="default" />
+        <StatusBar  backgroundColor = {'white'} barStyle="default" />
       </View>
     );
   }
