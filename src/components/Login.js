@@ -54,11 +54,11 @@ const Login = ({navigation}) => {
         else {
             setstate({...state, indicator : true});
             const userData = await userAuth.login(state.email, state.password);
-            if(userData !== undefined){
+            if(userData && !userData.message){
                 Toast.show('Logged in')
                 setstate({...state, indicator : false});
                 resetRoute();
-                navigation.navigate('App', {userData});
+                navigation.navigate('App', {name : "sumit"});
             }
             else{
                 setstate({...state, indicator : false});

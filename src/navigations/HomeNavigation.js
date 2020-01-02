@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, ImageBackground, SafeAreaView, StatusBar, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, ImageBackground, SafeAreaView, StatusBar, Button, AsyncStorage } from 'react-native';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import Home from '../components/Home';
@@ -12,10 +12,12 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { PRIMARY } from '../assets/styles/colors';
 import Login from '../components/Login';
 import { userAuth } from '../services';
+import Categories from '../components/Categories';
+import SubCategories from '../components/SubCategories';
 
 const { width : WIDTH} = Dimensions.get('window');
 
-const HomeNavigation = () => {
+const HomeNavigation = (props) => {
     const AppContainer = createAppContainer(createSwitchNavigator({
         Auth : Login,
         Home : HomeDrawer,
@@ -31,20 +33,20 @@ const HomeNavigation = () => {
 }
 
 const CustomDrawerComponent = (props)=> (
-    <ImageBackground style = {styles.drawerView} source = {BackgroundImage}>
-        <StatusBar barStyle = "light-content" backgroundColor = {PRIMARY} />
-        <SafeAreaView style = {styles.containerSafeAreaView}>
-            <View style= {styles.drawerUserView}>
-                <Icon name = 'ios-contact' size = {100} color = "#858585" />
-                <Text style = {styles.text}>Hi admin!</Text>
-            </View>
-            <View style={styles.devider} />
-            <ScrollView>
-                <DrawerItems {...props} />
-                <Button color = {'red'} title="Logout" onPress={() =>userAuth.logout(props.navigation)}/>
-            </ScrollView>
-        </SafeAreaView>
-    </ImageBackground>
+        <ImageBackground style = {styles.drawerView} source = {BackgroundImage}>
+            <StatusBar barStyle = "light-content" backgroundColor = {PRIMARY} />
+            <SafeAreaView style = {styles.containerSafeAreaView}>
+                <View style= {styles.drawerUserView}>
+                    <Icon name = 'ios-contact' size = {100} color = "#858585" />
+                    <Text style = {styles.text}>Hi Admin!</Text>
+                </View>
+                <View style={styles.devider} />
+                <ScrollView>
+                    <DrawerItems {...props} />
+                    <Button color = {'red'} title="Logout" onPress={() =>userAuth.logout(props.navigation)}/>
+                </ScrollView>
+            </SafeAreaView>
+        </ImageBackground>
 );
 
 const HomeStackNavigator = createStackNavigator({
@@ -107,6 +109,36 @@ const RolesStackNavigator = createStackNavigator({
     }
 });
 
+const CategoriesStackNavigator = createStackNavigator({
+    Categories : {
+        screen : Categories,
+         navigationOptions : ({navigation})=>{
+            return {
+                headerTitle : <Text style = {styles.text}>Roles</Text>,
+                headerStyle : {
+                    backgroundColor : PRIMARY
+                },
+                headerLeft: <Icon style={{paddingLeft: 5 }} color = "white" name="ios-menu" size={35} onPress={ () => navigation.openDrawer() } />
+            }
+        }
+    }
+});
+
+const SubCategoriesStackNavigator = createStackNavigator({
+    SubCategories : {
+        screen : SubCategories,
+         navigationOptions : ({navigation})=>{
+            return {
+                headerTitle : <Text style = {styles.text}>Roles</Text>,
+                headerStyle : {
+                    backgroundColor : PRIMARY
+                },
+                headerLeft: <Icon style={{paddingLeft: 5 }} color = "white" name="ios-menu" size={35} onPress={ () => navigation.openDrawer() } />
+            }
+        }
+    }
+});
+
 const HomeDrawer = createDrawerNavigator({
     Home : {
         screen : HomeStackNavigator,
@@ -131,7 +163,19 @@ const HomeDrawer = createDrawerNavigator({
         navigationOptions : {
             drawerIcon : ({tintColor})=> <Icon name = "ios-people" color = {tintColor} size = {24} />,    
         }
-}
+},
+    Categories : {
+        screen : CategoriesStackNavigator,
+        navigationOptions : {
+            drawerIcon : ({tintColor})=> <Icon name = "ios-stats" color = {tintColor} size = {24} />,    
+        }
+    },
+    SubCategories : {
+        screen : SubCategoriesStackNavigator,
+        navigationOptions : {
+            drawerIcon : ({tintColor})=> <Icon name = "ios-stats" color = {tintColor} size = {24} />,    
+        }
+    }
 },{ 
     contentComponent : CustomDrawerComponent,
     contentOptions : {

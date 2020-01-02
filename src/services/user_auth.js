@@ -1,19 +1,22 @@
 import { postAuth } from './apis';
 import {AsyncStorage} from 'react-native';
-import { StackActions } from 'react-navigation';
 
-const baseurl = 'api/v1/users';
+const baseurl = 'api/v1/users/adminlogin';
         
 const login = async (email,password)=> {
     const burl = process.env.BASEURL;
-    console.log('burl',burl);
+   // alert(burl);
     const userData = await postAuth({email, password}, baseurl);
-    if(userData.token){
-        await AsyncStorage.setItem('userToken', userData.token);
+    if(userData && userData.token){
+        await AsyncStorage.setItem('userDetail',JSON.stringify(userData));
     }
-    return userData.user;
-}
 
+    return userData;
+}
+export const getUser = async () =>{
+    const user = await AsyncStorage.getItem('userDetail');
+    return JSON.parse(user);
+}
 export const logout = async (navigation)=>{
     await AsyncStorage.clear();
     navigation.navigate('Auth');
@@ -21,7 +24,8 @@ export const logout = async (navigation)=>{
 
 export const userAuth =  {
     login,
-    logout
+    logout,
+    getUser
 }
 
 
