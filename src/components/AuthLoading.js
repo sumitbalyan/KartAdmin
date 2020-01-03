@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { PRIMARY } from '../assets/styles/colors';
+import { Token } from '../utils/Token';
 
 export default class AuthLoading extends React.Component {
   componentDidMount() {
@@ -15,11 +16,14 @@ export default class AuthLoading extends React.Component {
 
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('userDetail');
-
+    const parseToken = await Token.readAsyncStorageByKey('userDetail');
+    //Get token
+    const token = parseToken.token;
+    //Check if token is expired
+    const expire = (token === undefined) ? true : Token.isExpired(token);
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+    this.props.navigation.navigate(!expire ? 'App' : 'Auth');
   };
 
   // Render any loading content that you like here

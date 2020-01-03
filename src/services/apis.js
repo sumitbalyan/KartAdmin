@@ -1,4 +1,7 @@
 import { AsyncStorage } from "react-native";
+import { Token } from "../utils/Token";
+import { userAuth } from "./user_auth";
+import { Appnavigation } from "../utils/AppNavigation";
 
 // export const handleResponse = response => {
 //     const data = response.data;
@@ -13,8 +16,7 @@ import { AsyncStorage } from "react-native";
 //     }
 // }
 export const authHeaders = async () => {
-    const userDetail = await AsyncStorage.getItem("userDetail");
-    const parseUser = JSON.parse(userDetail) || {};
+    const parseUser = await Token.readAsyncStorageByKey('userDetail');
     const { token: accessToken } = parseUser;
     return !!accessToken
       ? {
@@ -26,7 +28,7 @@ export const authHeaders = async () => {
   }
 
   export const postAuth = async (data, url)=> {
-    const BASEURL = process.env.LOCAL_BASEURL;
+    const BASEURL = process.env.BASEURL;
     console.log('BASEURL : ',BASEURL);
     return await fetch(`http://10.0.2.2:6767/${url}`, {
         method: 'POST',
@@ -40,10 +42,12 @@ export const authHeaders = async () => {
             return response.json();
         })
         .then((resJson) => {
+            console.log(resJson);
             return resJson;
         })
         .catch((error) => {
             console.error(error);
+            return error;
           });
 }
 
@@ -55,13 +59,17 @@ export const post = async (data, url)=> {
       body: JSON.stringify(data),
       })
       .then((response) => {
+        if(response.status){
+            userAuth.logout(Appnavigation.getNavigation());
+        }
           return response.json();
       })
       .then((resJson) => {
           return resJson;
       })
       .catch((error) => {
-          console.error(error);
+        console.error(error);
+        return error;
         });
 }
 
@@ -73,6 +81,9 @@ export const get = async (url)=> {
       body: null
       })
       .then((response) => {
+        if(response.status){
+            userAuth.logout(Appnavigation.getNavigation());
+        }
           return response.json();
       })
       .then((resJson) => {
@@ -80,5 +91,29 @@ export const get = async (url)=> {
       })
       .catch((error) => {
           console.error(error);
+         // return error;
         });
 }
+
+
+export const del = async (url)=> {
+    const auth = await authHeaders();
+    return await fetch(`http://10.0.2.2:6767/${url}`, {
+        method: 'DELETE',
+        headers: auth,
+        //body: JSON.stringify(data),
+        })
+        .then((response) => {
+            if(response.status){
+                userAuth.logout(Appnavigation.getNavigation());
+            }
+            return response.json();
+        })
+        .then((resJson) => {
+            return resJson;
+        })
+        .catch((error) => {
+            console.error(error);
+          return error;
+          });
+  }

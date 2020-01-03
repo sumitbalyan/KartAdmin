@@ -14,10 +14,12 @@ import Login from '../components/Login';
 import { userAuth } from '../services';
 import Categories from '../components/Categories';
 import SubCategories from '../components/SubCategories';
+import { Appnavigation } from '../utils/AppNavigation';
 
 const { width : WIDTH} = Dimensions.get('window');
 
 const HomeNavigation = (props) => {
+    Appnavigation.setNavigation(props.navigation);
     const AppContainer = createAppContainer(createSwitchNavigator({
         Auth : Login,
         Home : HomeDrawer,
@@ -114,7 +116,7 @@ const CategoriesStackNavigator = createStackNavigator({
         screen : Categories,
          navigationOptions : ({navigation})=>{
             return {
-                headerTitle : <Text style = {styles.text}>Roles</Text>,
+                headerTitle : <Text style = {styles.text}>Categories</Text>,
                 headerStyle : {
                     backgroundColor : PRIMARY
                 },
@@ -129,7 +131,7 @@ const SubCategoriesStackNavigator = createStackNavigator({
         screen : SubCategories,
          navigationOptions : ({navigation})=>{
             return {
-                headerTitle : <Text style = {styles.text}>Roles</Text>,
+                headerTitle : <Text style = {styles.text}>Sub Categories</Text>,
                 headerStyle : {
                     backgroundColor : PRIMARY
                 },

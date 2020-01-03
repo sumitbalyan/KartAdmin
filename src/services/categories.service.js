@@ -1,20 +1,25 @@
-import {get, post} from './apis';
-const baseurl = 'api/v1/';
+import {get, post, del} from './apis';
+const baseurl = 'api/v1/categories';
 
 export const getAllCategories = async ()=> {
-    const url = baseurl + 'categories';
-    const categories = await get(url);
+    const categories = await get(baseurl);
     return categories;
 }
 
 export const addCategorie = async (categorie)=> {
-    const url = baseurl + 'categories';
     const data = { name : categorie }
-    const categories = await post(data,url);
+    const categories = await post(data,baseurl);
+    return categories;
+}
+
+export const deleteCategorie = async (id)=> {
+    const url = baseurl + `categories/${id}`;
+    const categories = await del(url);
     return categories;
 }
 
 export const categories = {
     getAllCategories,
-    addCategorie
+    addCategorie,
+    deleteCategorie
 }
